@@ -19,7 +19,7 @@ A Weather widget based on current location
 > be installing the Widget right away. The WeatherWidget target is the main app. Please dont be confused with the naming. 
 
 ### *Caveat\!!!*
-This app runs smoothly mostly on iOS14, since Widget requires SwiftUI, and most of the functions pertaining to the app features run only on iOS14+.
-Although most code can be rewritten to be compatible with iOS13.
-
-Crashes occur when multiple widgets are shown and background image selected. This is due to Memory Leak issue, probably due to image size.
+- This app runs mostly on iOS14, since Widget requires SwiftUI, and most of the functions pertaining to the app features run only on iOS14+.
+  Although most code can be rewritten to be compatible with iOS13, that might be subject for future improvements.
+- Crashes occur when multiple widgets are shown and background image selected. This is due to Memory Leak issue, probably due to image size.
+- There might be glitches during initial startup of Main app, this can be due to location not being set properly at first.
