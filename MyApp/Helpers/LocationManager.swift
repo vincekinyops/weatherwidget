@@ -27,7 +27,7 @@ extension LocationData: Equatable {
 }
 
 extension LocationData {
-    static let `default` = LocationData(city: "Makati City", area: "BGC", country: "Philippines")
+    static let `default` = LocationData(city: "Planet Mars", area: "SpaceX", country: "Philippines")
 }
 
 @available(iOS 14.0, *)
@@ -60,7 +60,9 @@ class LocationManager: NSObject, ObservableObject {
             
             // only update Widget when locationdata has changed, otherwise dont.
             // to refrain from unnecessary weather requests from widget, since widget is already requesting every minute for weather
-            if locationData.area != newValue.area || locationData.city != newValue.city || locationData.country != newValue.country {
+            if locationData == newValue {
+                
+            } else {
                 do {
                     let data = try JSONEncoder().encode(locationData)
                     UserDefaults.group?.setValue(data, forKey: UserDefaults.Keys.locationID)

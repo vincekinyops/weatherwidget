@@ -58,8 +58,6 @@ final class PhotoManager: NSObject, ObservableObject {
             let data = try! JSONEncoder().encode(photos)
             userDefaults.set(data, forKey: UserDefaults.Keys.photo)
         }
-        
-        WidgetCenter.shared.reloadAllTimelines()
     }
     
 }

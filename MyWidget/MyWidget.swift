@@ -38,8 +38,8 @@ struct Provider: TimelineProvider {
         let nextDate = Calendar.current.date(byAdding: .minute, value: 1, to: currentDate)!
         cancellables.removeAll()
         apiService.fetchAPIResource(WeatherWidgetResource(location, apiKey: Config.API_KEY))
-            .receive(on: DispatchQueue.main)
-            .retry(1)
+            .receive(on: RunLoop.main)
+            //.retry(1)
             //.assertNoFailure()
             .sink(receiveCompletion: {
                 switch $0 {
