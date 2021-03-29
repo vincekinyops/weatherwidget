@@ -36,10 +36,11 @@ struct Provider: TimelineProvider {
         // update every 1minute
         let currentDate = Date()
         let nextDate = Calendar.current.date(byAdding: .minute, value: 1, to: currentDate)!
-        
-        
+        cancellables.removeAll()
         apiService.fetchAPIResource(WeatherWidgetResource(location, apiKey: Config.API_KEY))
-            .receive(on: RunLoop.main)
+            .receive(on: DispatchQueue.main)
+            .retry(1)
+            //.assertNoFailure()
             .sink(receiveCompletion: {
                 switch $0 {
                 case .failure(let error):

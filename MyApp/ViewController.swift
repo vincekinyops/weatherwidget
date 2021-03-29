@@ -14,9 +14,9 @@ import Combine
 class ViewController: UIViewController {
     private var photoManager = PhotoManager()
     private var locationManager: LocationManager!
-    private var cancellable: AnyCancellable?
     private let apiService = APIService()
     private var cancellables = Set<AnyCancellable>()
+    
     @IBOutlet weak var scrollView: UIScrollView! {
         didSet {
             scrollView.delegate = self
@@ -50,21 +50,25 @@ class ViewController: UIViewController {
             selectedImage = image
         }
         
-        cancellable = locationManager.$locationData.sink { [weak self] locationData in
+        locationManager.$locationData.sink { [weak self] locationData in
             self?.setWeather(locationData)
         }
+        .store(in: &cancellables)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print("viewDidAppear")
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        let alert = UIAlertController(title: "Test", message: "Testing close", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .destructive, handler: nil))
-        self.present(alert, animated: false, completion: nil)
+        
+        if locationManager.locationStatus! == .denied || locationManager.locationStatus! == .restricted {
+            locationManager.requestPermission()
+        }
+        
+        locationManager.$locationStatus.sink { [weak self] status in
+            if status == .denied || status == .restricted {
+                self?.showLocationWarning()
+            }
+        }
+        .store(in: &cancellables)
     }
     
     @IBAction func handleChangeBackground(_ sender: UIButton) {
@@ -75,6 +79,22 @@ class ViewController: UIViewController {
         let picker = PHPickerViewController(configuration: config)
         picker.delegate = self
         self.present(picker, animated: true, completion: nil)
+    }
+    
+    func showLocationWarning() {
+        // go to location settings to change location status
+        let alert = UIAlertController(title: "Warning", message: "You denied permission for weather widget to access your location. You can always change this in your Location Settings.", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Go to Settings", style: .default, handler: { _ in
+            if let bundleId = Bundle.main.bundleIdentifier,
+                let url = URL(string: "\(UIApplication.openSettingsURLString)&path=LOCATION/\(bundleId)")
+            {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            }
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        self.present(alert, animated: false, completion: nil)
     }
     
     func setBackgroundImage() {

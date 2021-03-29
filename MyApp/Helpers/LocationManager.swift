@@ -88,6 +88,10 @@ class LocationManager: NSObject, ObservableObject {
         }
     }
     
+    public func requestPermission() {
+        locationManager.requestWhenInUseAuthorization()
+    }
+    
     public func getLocationData() -> LocationData {
         self.locationData
     }
