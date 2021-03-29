@@ -11,6 +11,6 @@ import UIKit
 protocol WidgetViewBuilder: UIView {
     var weatherData: WeatherResult { get set }
     var backgroundImage: UIImage { get set }
-    var locationString: String { get set }
+    var locationData: LocationData { get set }
 }
 

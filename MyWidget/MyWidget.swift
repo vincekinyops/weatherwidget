@@ -18,17 +18,18 @@ struct Provider: TimelineProvider {
     
     let locationInfo: String? = nil
     func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), imageID: nil, locationString: nil, weatherData: WeatherResult.default)
+        SimpleEntry(date: Date(), imageID: nil, weatherData: WeatherResult.default, locationData: LocationData.default)
     }
 
     func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date(), imageID: nil, locationString: nil, weatherData: WeatherResult.default)
+        let entry = SimpleEntry(date: Date(), imageID: nil, weatherData: WeatherResult.default, locationData: LocationData.default)
         completion(entry)
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        // default location, set to another city to check if it changes to your own city
-        var locationString: String = "Makati City,Philippines"
+        // get location string from location manager initiated
+        let location = locationManager.locationData
+        
         // get image id from user defaults
         let imageIDS = PhotoHelper.getImageIdsFromUserDefault()
         
@@ -36,20 +37,16 @@ struct Provider: TimelineProvider {
         let currentDate = Date()
         let nextDate = Calendar.current.date(byAdding: .minute, value: 1, to: currentDate)!
         
-        // get location string from location manager initiated
-        if let location = locationManager.locationData.locationString {
-            locationString = location
-        }
         
-        apiService.fetchAPIResource(WeatherWidgetResource(locationString, apiKey: Config.API_KEY))
+        apiService.fetchAPIResource(WeatherWidgetResource(location, apiKey: Config.API_KEY))
             .receive(on: RunLoop.main)
             .sink(receiveCompletion: {
                 switch $0 {
                 case .failure(let error):
                     print(error.localizedDescription)
                     let entries = [
-                        SimpleEntry(date: currentDate, imageID: imageIDS.first, locationString: locationString, weatherData: WeatherResult.default),
-                        SimpleEntry(date: nextDate, imageID: imageIDS.first, locationString: locationString, weatherData: WeatherResult.default)
+                        SimpleEntry(date: currentDate, imageID: imageIDS.first, weatherData: WeatherResult.default, locationData: location),
+                        SimpleEntry(date: nextDate, imageID: imageIDS.first, weatherData: WeatherResult.default, locationData: location)
                     ]
                     let timeline = Timeline(entries: entries, policy: .atEnd)
                     completion(timeline)
@@ -58,8 +55,8 @@ struct Provider: TimelineProvider {
                 }
             }, receiveValue: {
                 let entries = [
-                    SimpleEntry(date: currentDate, imageID: imageIDS.first, locationString: locationString, weatherData: $0),
-                    SimpleEntry(date: nextDate, imageID: imageIDS.first, locationString: locationString, weatherData: $0)
+                    SimpleEntry(date: currentDate, imageID: imageIDS.first, weatherData: $0, locationData: location),
+                    SimpleEntry(date: nextDate, imageID: imageIDS.first, weatherData: $0, locationData: location)
                 ]
                 let timeline = Timeline(entries: entries, policy: .atEnd)
                 completion(timeline)
@@ -71,8 +68,9 @@ struct Provider: TimelineProvider {
 struct SimpleEntry: TimelineEntry {
     let date: Date
     var imageID: String?
-    var locationString: String?
+    //var locationString: String?
     var weatherData: WeatherResult
+    var locationData: LocationData
 }
 
 @available(iOSApplicationExtension 14.0, *)
@@ -81,6 +79,10 @@ struct MyWidgetEntryView : View {
     @Environment(\.widgetFamily) var family
     
     private static let appURL: URL = URL(string: "widget-deeplink://")!
+    
+    var locationString: String {
+        return ""
+    }
     
     @ViewBuilder
     var body: some View {
@@ -108,7 +110,7 @@ struct MyWidgetEntryView : View {
                                 .foregroundColor(Color.black)
                                 .cornerRadius(5)
                         }
-                        Text(entry.locationString ?? "...")
+                        Text(entry.locationData.locationString)
                             .kerning(-0.41)
                             .font(.system(size: 16, weight: .bold, design: .rounded))
                             .padding(5)
@@ -150,7 +152,7 @@ struct MyWidgetEntryView : View {
                                     .foregroundColor(Color.black)
                                     .cornerRadius(5)
                             }
-                            Text(entry.locationString ?? "...")
+                            Text(entry.locationData.locationString)
                                 .kerning(-0.41)
                                 .font(.system(size: 22, weight: .bold, design: .rounded))
                                 .padding(5)
@@ -186,7 +188,7 @@ struct MyWidgetEntryView : View {
                             .cornerRadius(5)
                     }
                     
-                    Text(entry.locationString ?? "...")
+                    Text(entry.locationData.locationString)
                         .kerning(-0.41)
                         .font(.system(size: 25, weight: .bold, design: .rounded))
                         .padding(5)
@@ -220,7 +222,7 @@ struct MyWidget: Widget {
 
 struct MyWidget_Previews: PreviewProvider {
     static var previews: some View {
-        MyWidgetEntryView(entry: SimpleEntry(date: Date(), imageID: nil, locationString: "Local residence, country", weatherData: WeatherResult.default))
+        MyWidgetEntryView(entry: SimpleEntry(date: Date(), imageID: nil, weatherData: WeatherResult.default, locationData: LocationData.default))
             .previewContext(WidgetPreviewContext(family: .systemSmall))
     }
 }

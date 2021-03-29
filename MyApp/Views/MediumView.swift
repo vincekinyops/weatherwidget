@@ -21,9 +21,9 @@ class MediumView: UIView, WidgetViewBuilder {
         }
     }
     
-    var locationString: String = "" {
+    var locationData: LocationData = LocationData.default {
         didSet {
-            locationLabel.text = locationString
+            locationLabel.text = locationData.locationString
         }
     }
     

@@ -96,10 +96,10 @@ struct WeatherWidgetResource: APIResource {
     let methodPath: String
     var queryItems: [URLQueryItem]?
 
-    init(_ location: String, apiKey: String) {
+    init(_ locationData: LocationData, apiKey: String) {
         methodPath = "/data/2.5/weather"
         queryItems = [
-            URLQueryItem(name: "q", value: location),
+            URLQueryItem(name: "q", value: locationData.locationString),
             URLQueryItem(name: "APPID", value: apiKey)
         ]
     }

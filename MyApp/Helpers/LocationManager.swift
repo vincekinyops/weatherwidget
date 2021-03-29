@@ -15,12 +15,19 @@ struct LocationData: Codable {
     var area: String
     var country: String
     
-    var locationString: String? {
-        if !country.isEmpty && !area.isEmpty && !city.isEmpty {
-            return "\(city),\(country)"
-        }
-        return nil
+    var locationString: String {
+        return "\(city),\(country)"
     }
+}
+
+extension LocationData: Equatable {
+    static func ==(lhs: LocationData, rhs: LocationData) -> Bool {
+        return lhs.city == rhs.city && lhs.area == rhs.area && lhs.country == rhs.country
+    }
+}
+
+extension LocationData {
+    static let `default` = LocationData(city: "Makati City", area: "BGC", country: "Philippines")
 }
 
 @available(iOS 14.0, *)
@@ -47,7 +54,7 @@ class LocationManager: NSObject, ObservableObject {
         }
     }
     
-    @Published var locationData = LocationData(city: "", area: "", country: "") {
+    @Published var locationData = LocationData.default {
         willSet {
             //print(locationData)
             

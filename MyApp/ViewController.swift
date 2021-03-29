@@ -32,6 +32,8 @@ class ViewController: UIViewController {
     }
     var widgets = [WidgetViewBuilder]()
     
+    private var currentLocation: LocationData!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("viewDidLoad ")
@@ -48,8 +50,8 @@ class ViewController: UIViewController {
             selectedImage = image
         }
         
-        cancellable = locationManager.$locationData.sink { [weak self] data in
-            self?.setWeather(data)
+        cancellable = locationManager.$locationData.sink { [weak self] locationData in
+            self?.setWeather(locationData)
         }
     }
     
@@ -82,23 +84,27 @@ class ViewController: UIViewController {
     }
     
     func setWeather(_ locationData: LocationData) {
-        let locString = locationData.locationString ?? "Makati City, Philippines"
-        apiService.fetchAPIResource(WeatherWidgetResource(locString, apiKey: Config.API_KEY))
-            .receive(on: RunLoop.main)
-            .sink(receiveCompletion: {
-                switch $0 {
-                case .failure(let error):
-                    print(error.localizedDescription)
-                case .finished:
-                    print("Request completed")
-                }
-            }, receiveValue: { [weak self] data in
-                for widgetView in self!.widgets {
-                    widgetView.weatherData = data
-                    widgetView.locationString = locString
-                }
-            })
-            .store(in: &cancellables)
+        // only request if not the same location, since we are subscribing to location changes
+        if currentLocation == locationData {
+            // TODO: for now do nothing
+        } else {
+            apiService.fetchAPIResource(WeatherWidgetResource(locationData, apiKey: Config.API_KEY))
+                .receive(on: RunLoop.main)
+                .sink(receiveCompletion: {
+                    switch $0 {
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                    case .finished:
+                        print("Request completed")
+                    }
+                }, receiveValue: { [weak self] data in
+                    for widgetView in self!.widgets {
+                        widgetView.weatherData = data
+                        widgetView.locationData = locationData
+                    }
+                })
+                .store(in: &cancellables)
+        }
     }
 }
 

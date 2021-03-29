@@ -21,13 +21,13 @@ class LargeView: UIView, WidgetViewBuilder {
         }
     }
     
-    var locationString: String = "" {
+    var locationData: LocationData = LocationData.default {
         didSet {
-            locationLabel.text = locationString
+            locationLabel.text = locationData.locationString
         }
     }
-    @IBOutlet weak var weatherLabel: UILabel!
     
+    @IBOutlet weak var weatherLabel: UILabel!
     @IBOutlet weak var backgroundView: UIImageView!
     @IBOutlet weak var weatherImage: UIImageView!
     @IBOutlet weak var locationLabel: UILabel!
