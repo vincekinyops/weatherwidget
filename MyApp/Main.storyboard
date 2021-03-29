@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="QVE-Jz-LvT">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Weather Widget-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="WeatherWidget" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="nQH-nP-cuw">
+                                <rect key="frame" x="145.5" y="664" width="123" height="28"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="pageIndicatorTintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="currentPageIndicatorTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </pageControl>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v1t-FY-Yol">
+                                <rect key="frame" x="20" y="722" width="374" height="40"/>
+                                <color key="backgroundColor" name="accentgreen"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="ChE-Zw-eRN"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="-5" maxY="0.0"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="5" maxY="0.0"/>
+                                <state key="normal" title="Change Background" image="photo" catalog="system"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="handleChangeBackground:" destination="BYZ-38-t0r" eventType="touchUpInside" id="W06-or-JJk"/>
+                                </connections>
+                            </button>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" directionalLockEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Hq-f3-zKT">
+                                <rect key="frame" x="0.0" y="88" width="414" height="566"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fmc-ry-0yh">
+                                        <rect key="frame" x="0.0" y="0.0" width="1242" height="616.5"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="Fmc-ry-0yh" firstAttribute="width" secondItem="5Hq-f3-zKT" secondAttribute="width" multiplier="3" id="4A4-hC-Khh"/>
+                                    <constraint firstItem="Fmc-ry-0yh" firstAttribute="top" secondItem="5Hq-f3-zKT" secondAttribute="top" id="Bmq-qT-Brx"/>
+                                    <constraint firstAttribute="bottom" secondItem="Fmc-ry-0yh" secondAttribute="bottom" id="E9n-dN-pgK"/>
+                                    <constraint firstItem="Fmc-ry-0yh" firstAttribute="height" secondItem="5Hq-f3-zKT" secondAttribute="height" multiplier="1.08955" id="S1x-rf-u0b"/>
+                                    <constraint firstItem="Fmc-ry-0yh" firstAttribute="leading" secondItem="5Hq-f3-zKT" secondAttribute="leading" id="plb-la-ecf"/>
+                                    <constraint firstAttribute="trailing" secondItem="Fmc-ry-0yh" secondAttribute="trailing" id="sKP-Bc-wmJ"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="goc-Ek-b8f"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="hpy-7A-IzG"/>
+                            </scrollView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" name="lightsand"/>
+                        <constraints>
+                            <constraint firstItem="5Hq-f3-zKT" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="18W-bb-Gbn"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="v1t-FY-Yol" secondAttribute="bottom" constant="100" id="1TL-IH-ZbN"/>
+                            <constraint firstItem="5Hq-f3-zKT" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="3qO-Yb-VOK"/>
+                            <constraint firstItem="nQH-nP-cuw" firstAttribute="top" secondItem="5Hq-f3-zKT" secondAttribute="bottom" constant="10" id="4Wf-qF-DWD"/>
+                            <constraint firstItem="v1t-FY-Yol" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="9eH-lD-dN2"/>
+                            <constraint firstItem="v1t-FY-Yol" firstAttribute="top" secondItem="nQH-nP-cuw" secondAttribute="bottom" constant="30" id="X2Q-2Y-9NH"/>
+                            <constraint firstItem="nQH-nP-cuw" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="bkl-MO-At4"/>
+                            <constraint firstItem="5Hq-f3-zKT" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="gkf-bs-Zrb"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="v1t-FY-Yol" secondAttribute="trailing" constant="20" id="yjq-Dt-0e1"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Weather Widget" id="qnI-by-2fa"/>
+                    <connections>
+                        <outlet property="changeBGButton" destination="v1t-FY-Yol" id="LLD-j9-zmY"/>
+                        <outlet property="contentView" destination="Fmc-ry-0yh" id="ZPM-Kx-dfC"/>
+                        <outlet property="pageControl" destination="nQH-nP-cuw" id="7RB-fL-ls6"/>
+                        <outlet property="scrollView" destination="5Hq-f3-zKT" id="csV-T6-yX3"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1130.4347826086957" y="121.875"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="bnv-6t-RKO">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="QVE-Jz-LvT" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="MSJ-q8-zj8">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="KJx-22-rTe"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Zhg-y2-8Ms" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="218.84057971014494" y="121.875"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="photo" catalog="system" width="128" height="93"/>
+        <namedColor name="accentgreen">
+            <color red="0.33300000429153442" green="0.67100000381469727" blue="0.40400001406669617" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="lightsand">
+            <color red="0.94499999284744263" green="0.93699997663497925" blue="0.89800000190734863" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
